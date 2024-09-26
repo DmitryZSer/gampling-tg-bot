@@ -1,11 +1,23 @@
 #token 7513438563:AAFu4m2zL0fQhSg8QWQASwPVUxBZ53BYosk
+from multiprocessing import Process
 import telebot
 from telebot import types
-from mines import handle_mines_selection, handle_registration, handle_back_registration, handle_exit_selection
+from mines import handle_mines_selection, handle_registration, handle_back_registration, handle_exit_selection, handle_back_mines
+from flask import Flask, send_from_directory
+
+app = Flask(__name__, static_folder='minesapp')
+
+@app.route('/')
+def serve_index():
+    return send_from_directory(app.static_folder, 'index.html')
+
 
 # Ваш токен
 token = "7513438563:AAFu4m2zL0fQhSg8QWQASwPVUxBZ53BYosk"
 bot = telebot.TeleBot(token)
+
+def run_flask():
+    app.run(host='0.0.0.0', port=5000)  # Используйте 0.0.0.0, чтобы сделать доступным на всех интерфейсах
 
 # Приветственное сообщение
 @bot.message_handler(commands=['start'])
@@ -55,10 +67,20 @@ def registration_selection(call):
 def back_registration_selection(call):
     handle_back_registration(call, bot)
 
+# Обработка кнопки "Выдать сигнал"
+@bot.callback_query_handler(func=lambda call: call.data == "back_mines")
+def back_mines_selection(call):
+    handle_back_mines(call, bot)
+
 # Обработка текстовых сообщений
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
     bot.reply_to(message, "Меня еще не научили этому")
 
-# Запуск бота
-bot.polling()
+if __name__ == '__main__':
+    # Запускаем Flask в отдельном процессе
+    flask_process = Process(target=run_flask)
+    flask_process.start()
+
+    # Запускаем бота
+    bot.polling()

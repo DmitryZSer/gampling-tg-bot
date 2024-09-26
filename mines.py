@@ -1,5 +1,8 @@
 from telebot import types
 
+# Словарь для отслеживания статуса регистрации пользователей
+user_registered = {}
+
 def handle_mines_selection(call, bot):  # Добавляем параметр bot
     # Отправляем изображение, текст и кнопки для Mines
     mines_photo_path = 'img/mines.jpg'  # Замените на путь к картинке для Mines
@@ -24,15 +27,38 @@ def handle_mines_selection(call, bot):  # Добавляем параметр bo
 
 # Обработка выбора регистрации
 def handle_registration(call, bot):  # Добавляем параметр bot
+    # Обновляем статус пользователя как зарегистрированного
+    user_registered[call.from_user.id] = False  # Ставим False до проверки
+
     # Отправляем текст с кнопками "Зарегистрироваться" и "Назад"
-    registration_text = "Для регистрации нажмите на кнопку ниже:"
+    registration_text = (
+        "Для корректной связи с нейросетью, требуется зарегистрироваться по нашей ссылке. "
+        "Нейросеть синхронизируется с вашим аккаунтом для расчета личных сигналов."
+    )
     
     markup = types.InlineKeyboardMarkup()
-    btn_register = types.InlineKeyboardButton("Зарегистрироваться", url="https://ikaragodin.ru")  # Замените на вашу ссылку
+    btn_register = types.InlineKeyboardButton("Зарегистрироваться", url="https://1wloom.top/casino/play/1play_1play_mines/?sub_1=486319246&open=register")  # Замените на вашу ссылку
     btn_back = types.InlineKeyboardButton("Назад", callback_data="back_registration")
     markup.row(btn_register, btn_back)
 
     bot.send_message(call.message.chat.id, registration_text, reply_markup=markup)
+
+# Обработка кнопки "Выдать сигнал"
+def handle_back_mines(call, bot):
+    #user_id = call.from_user.id
+    #if user_id in user_registered and user_registered[user_id]:  # Если пользователь зарегистрирован
+        # Создаем WebApp-кнопку
+        markup = types.InlineKeyboardMarkup()
+        webapp_url = "http://192.168.254.104:5000"  # Замените на ссылку на ваш WebApp
+        webapp_button = types.InlineKeyboardButton("Получить сигнал", web_app=types.WebAppInfo(webapp_url))
+        markup.add(webapp_button)
+        
+        # Отправляем пользователю кнопку для открытия WebApp
+        bot.send_message(call.message.chat.id, "Вы зарегистрированы! Откройте WebApp для получения сигнала.", reply_markup=markup)
+    #else:
+        # Если пользователь не зарегистрировался, отправляем напоминание о регистрации
+    #    bot.send_message(call.message.chat.id, "Чтобы получить сигнал, необходимо зарегистрироваться.")
+    #    handle_registration(call, bot)
 
 # Обработка кнопки "Назад" на экране регистрации
 def handle_back_registration(call, bot):  # Добавляем параметр bot
@@ -44,3 +70,5 @@ def handle_exit_selection(call, bot):  # Добавляем параметр bot
     # Возвращаем пользователя к выбору языка
     from bot import send_welcome  # Импортируем send_welcome здесь, чтобы избежать циклического импорта
     send_welcome(call.message)
+
+# Дополнительно — можно реализовать проверку перехода по ссылке регистрации (например, через API или анализ переходов на сторонних платформах).
