@@ -72,6 +72,11 @@ def back_rules_selection(call):
 def back_mines_selection(call):
     handle_back_mines(call, bot)
 
+# Обработка кнопки "Выбор языка"
+@bot.callback_query_handler(func=lambda call: call.data == "start")
+def handle_start_selection(call):
+    send_welcome(call.message)
+
 # Обработка текстовых сообщений
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
