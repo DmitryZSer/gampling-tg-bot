@@ -1,7 +1,8 @@
 from telebot import types
+from registration import is_user_registered, register_user
 
 # Словарь для отслеживания статуса регистрации пользователей
-user_registered = {}
+#user_registered = {}
 
 def handle_mines_selection(call, bot):  # Добавляем параметр bot
     # Отправляем изображение, текст и кнопки для Mines
@@ -17,9 +18,10 @@ def handle_mines_selection(call, bot):  # Добавляем параметр bo
     markup = types.InlineKeyboardMarkup()
     btn_action1 = types.InlineKeyboardButton("Регистрация", callback_data="registration")
     btn_action2 = types.InlineKeyboardButton("Инструкция", callback_data="rules_mines")
+    markup.row(btn_action1, btn_action2)
     btn_action3 = types.InlineKeyboardButton("Выдать сигнал", callback_data="back_mines")
     btn_action4 = types.InlineKeyboardButton("Выбор языка", callback_data="start")
-    markup.row(btn_action1, btn_action2, btn_action3, btn_action4)
+    markup.row(btn_action3, btn_action4)
 
     # Отправка изображения с текстом и кнопками
     with open(mines_photo_path, 'rb') as photo:
@@ -54,9 +56,9 @@ def handle_rules_mines(call, bot):  # Добавляем новую функци
         bot.send_photo(call.message.chat.id, photo, caption=instruction_text, reply_markup=markup)
 
 # Обработка выбора регистрации
-def handle_registration(call, bot):  # Добавляем параметр bot
+def handle_registration(call, bot, url):  # Добавляем параметр bot
     # Обновляем статус пользователя как зарегистрированного
-    user_registered[call.from_user.id] = True  # Ставим False до проверки
+    register_user[call.from_user.id] = True  # Ставим False до проверки
 
     # Отправляем текст с кнопками "Зарегистрироваться" и "Назад"
     registration_text = (
@@ -65,9 +67,10 @@ def handle_registration(call, bot):  # Добавляем параметр bot
     )
     
     markup = types.InlineKeyboardMarkup()
-    btn_register = types.InlineKeyboardButton("Зарегистрироваться", url="https://1wloom.top/casino/play/1play_1play_mines/?sub_1=486319246&open=register")  # Замените на вашу ссылку
+    btn_register = types.InlineKeyboardButton("Зарегистрироваться", url=url)  # Замените на вашу ссылку
+    markup.row(btn_register)
     btn_back = types.InlineKeyboardButton("Назад", callback_data="back_registration")
-    markup.row(btn_register, btn_back)
+    markup.row(btn_back)
 
     bot.send_message(call.message.chat.id, registration_text, reply_markup=markup)
 
@@ -75,7 +78,7 @@ def handle_registration(call, bot):  # Добавляем параметр bot
 # Обработка кнопки "Выдать сигнал"
 def handle_back_mines(call, bot):
     user_id = call.from_user.id
-    if user_id in user_registered and user_registered[user_id]:  # Если пользователь зарегистрирован
+    if user_id in register_user and register_user[user_id]:  # Если пользователь зарегистрирован
         # Создаем WebApp-кнопку
         markup = types.InlineKeyboardMarkup()
         webapp_url = "https://ikaragodin.ru/gampling-tg/minesapp/index.html"  # Замените на ссылку на ваш WebApp
@@ -83,7 +86,7 @@ def handle_back_mines(call, bot):
         markup.add(webapp_button)
         
         # Отправляем пользователю кнопку для открытия WebApp
-        bot.send_message(call.message.chat.id, "Вы зарегистрированы! Откройте WebApp для получения сигнала.", reply_markup=markup)
+        bot.send_message(call.message.chat.id, "Вы зарегистрированы!", reply_markup=markup)
     else:
         # Если пользователь не зарегистрировался, отправляем напоминание о регистрации
         bot.send_message(call.message.chat.id, "Чтобы получить сигнал, необходимо зарегистрироваться.")
