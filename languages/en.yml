@@ -2,10 +2,35 @@ en:
   welcome:
     choose_language: "Choose your language:"
     message: "Welcome to our bot!"
+    game_shoice: "Choose a game:"
 
   menu:
-    title: "Please select an option:"
-    info: "Information"
-    settings: "Settings"
-    error_message: "I haven't been taught that yet."
-    lang_choised: "You choised english!!!!!!!!"
+    error_message: "I haven't been taught this yet."
+    registration: "Registration"
+    register: "Register"
+    you_are_registered: "You are registered!"
+    error_register: "To receive a signal, you need to register."
+    instruction: "Instruction"
+    issue_a_signal: "Issue a signal"
+    get_a_signal: "Get a signal"
+    choice_of_language: "Language choice"
+    back: "Back"
+    registration_text: "For proper communication with the neural network, you need to register using our link.\nThe neural network synchronizes with your account to calculate personal signals."
+
+    instruction_text: "The bot is based and trained on the OpenAI neural network cluster 🖥 [ChatGPT-v4.2.0]\nApproximately 13,000 games were played to train the bot.\nCurrently, bot users are successfully making 20-30% of their deposit per day!\nAt the moment, the bot is still learning and its accuracy is 85%!\nTo get maximum profit, follow these instructions:\n👉🏻 1. Register at the 1WIN bookmaker.\nIf it doesn't open, access with VPN enabled (Sweden).\nWithout registration, access to signals will not be available!\n👉🏻 2. Top up your account balance.\n👉🏻 3. Go to the 1WIN Games section and select the 💣 'mines' game.\n👉🏻 4. Request a signal in the bot and bet according to the signals from the bot.\n👉🏻 5. In case of an unsuccessful signal, we advise doubling the bet to fully cover the loss on the next signal."
+
+  mines:
+    intro_test: "Entered mines"
+    mines_caption: "Welcome to the 💣 MINES 💣 signal bot\nMines is a gambling game in the 1WIN bookmaker, based on the classic 'Minesweeper'.\nYour goal is to open safe cells and not fall into traps.\n\nOur bot is based on the OpenAI neural network!\nIt can predict the location of stars with 85% probability."
+
+  tropicana:
+    intro_test: "Entered tropicana"
+    tropicana_caption: "Welcome to the 🌊 TROPICANA game 🏄‍♀️\n🏄‍♀️ Tropicana is a game where you bet on an increasing multiplier before the girl rides on a surfboard. The longer you wait, the higher your potential winnings, but if the girl leaves before you cash out, you lose.\nOur bot will help find the optimal time for your bet."
+
+  crash:
+    intro_test: "Entered crash"
+    crash_caption: "Welcome to the CRASH game 💥\nOur bot will help find the optimal time for your bet."
+
+  lucky_jet:
+    intro_test: "Entered lucky_jet"
+    lucky_jet_caption: "Welcome to 💥LUCKY JET | MINESAI BOT💥!\n\n✈️ Lucky Jet is a gambling game where you need to place a bet before the flying plane flies away with your money.\nThe longer it flies, the more you win when you exit the game.\nGuess the right moment to bet and win!\nOur bot will help you make the right bet!"
