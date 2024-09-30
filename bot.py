@@ -1,8 +1,10 @@
 #token 7513438563:AAFu4m2zL0fQhSg8QWQASwPVUxBZ53BYosk
+import datetime
 
 import telebot
 from telebot import types
 from mines import handle_mines_selection, handle_registration, handle_back_registration, handle_rules_mines, handle_back_rules, handle_back_mines, handle_exit_selection
+from registration import register_user
 from tropicana import handle_tropicana_selection, handle_registration_tropicana, handle_back_registration_tropicana, handle_rules_tropicana, handle_back_rules_tropicana, handle_back_tropicana
 
 # Ссылка для регистрации
@@ -141,4 +143,6 @@ def echo_all(message):
 
 if __name__ == '__main__':
     # Запускаем бота
+    print("Bot is started at", (datetime.datetime.now()))
     bot.polling()
+    print("Bot is finished without errors at", datetime.datetime.now())

@@ -1,12 +1,14 @@
 from telebot import types
+
 from registration import is_user_registered, register_user
+url = "https://1wloom.top/casino/play/1play_1play_mines/?sub_1=486319246&open=register"
 
 # Словарь для отслеживания статуса регистрации пользователей
 #user_registered = {}
 
 def handle_mines_selection(call, bot):  # Добавляем параметр bot
     # Отправляем изображение, текст и кнопки для Mines
-    mines_photo_path = 'img/mines.jpg'  # Замените на путь к картинке для Mines
+    mines_photo_path = 'img/mines.jpg'
     mines_caption = (
         "Добро пожаловать в бот-сигнал игры 💣 MINES 💣\n"
         "Mines — это гэмблинг игра в букмекерской конторе 1WIN, которая основывается на классическом 'Сапёре'.\n"
@@ -58,7 +60,7 @@ def handle_rules_mines(call, bot):  # Добавляем новую функци
 # Обработка выбора регистрации
 def handle_registration(call, bot, url):  # Добавляем параметр bot
     # Обновляем статус пользователя как зарегистрированного
-    register_user[call.from_user.id] = True  # Ставим False до проверки
+    register_user(call.from_user.id)
 
     # Отправляем текст с кнопками "Зарегистрироваться" и "Назад"
     registration_text = (
@@ -78,7 +80,7 @@ def handle_registration(call, bot, url):  # Добавляем параметр 
 # Обработка кнопки "Выдать сигнал"
 def handle_back_mines(call, bot):
     user_id = call.from_user.id
-    if user_id in register_user and register_user[user_id]:  # Если пользователь зарегистрирован
+    if is_user_registered(user_id):  # Если пользователь зарегистрирован
         # Создаем WebApp-кнопку
         markup = types.InlineKeyboardMarkup()
         webapp_url = "https://ikaragodin.ru/gampling-tg/minesapp/index.html"  # Замените на ссылку на ваш WebApp
@@ -90,7 +92,7 @@ def handle_back_mines(call, bot):
     else:
         # Если пользователь не зарегистрировался, отправляем напоминание о регистрации
         bot.send_message(call.message.chat.id, "Чтобы получить сигнал, необходимо зарегистрироваться.")
-        handle_registration(call, bot)
+        handle_registration(call, bot, url)
 
 # Обработка кнопки "Назад" на экране регистрации
 def handle_back_registration(call, bot):  # Добавляем параметр bot

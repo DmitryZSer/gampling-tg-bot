@@ -45,8 +45,7 @@ def handle_rules_tropicana(call, bot):  # Добавляем новую функ
 # Обработка выбора регистрации
 def handle_registration_tropicana(call, bot, url):  # Добавляем параметр bot
     # Обновляем статус пользователя как зарегистрированного
-    register_user[call.from_user.id] = True  # Ставим False до проверки
-
+    register_user(call.from_user.id)
     # Отправляем текст с кнопками "Зарегистрироваться" и "Назад"
     registration_text = (
         "Для корректной связи с нейросетью, требуется зарегистрироваться по нашей ссылке. "
