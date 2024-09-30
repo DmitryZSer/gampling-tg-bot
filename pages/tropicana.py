@@ -1,24 +1,20 @@
 from telebot import types
-from modules.registration import is_user_registered, register_user
 
-# Словарь для отслеживания статуса регистрации пользователей
-#user_registered = {}
+from modules.registration import is_user_registered, register_user
+from resources import url
+from modules.lang_handler import _
 
 def handle_tropicana_selection(call, bot):  # Добавляем параметр bot
     # Отправляем изображение, текст и кнопки для Mines
-    tropicana_photo_path = 'img/mines.jpg'  # Замените на путь к картинке для Mines
-    tropicana_caption = (
-        "Добро пожаловать в 🌊 игру TROPICANA 🏄‍♀️"
-        "🏄‍♀️ Tropicana - это игра, в которой вы делаете ставку на увеличивающийся множитель до того, как девушка едет на доске для серфинга. Чем дольше вы ждете, тем выше ваш потенциальный выигрыш, но если девушка уедет до того, как вы получите деньги, вы проиграете."
-        "Наш бот поможет найти оптимальное время для вашей ставке."
-    )
+    tropicana_photo_path = 'img/tropicana.jpg'  # Замените на путь к картинке для Mines
+    tropicana_caption = _('tropicana.tropicana_caption')
 
     markup = types.InlineKeyboardMarkup()
-    btn_action1 = types.InlineKeyboardButton("Регистрация", callback_data="registration_tropicana")
-    btn_action2 = types.InlineKeyboardButton("Инструкция", callback_data="rules_tropicana")
+    btn_action1 = types.InlineKeyboardButton(_("menu.registration"), callback_data="registration_tropicana")
+    btn_action2 = types.InlineKeyboardButton(_("menu.instruction"), callback_data="rules_tropicana")
     markup.row(btn_action1, btn_action2)
-    btn_action3 = types.InlineKeyboardButton("Выдать сигнал", callback_data="back_tropicana")
-    btn_action4 = types.InlineKeyboardButton("Выбор языка", callback_data="start")
+    btn_action3 = types.InlineKeyboardButton(_("menu.issue_a_signal"), callback_data="back_tropicana")
+    btn_action4 = types.InlineKeyboardButton(_("menu.choice_of_language"), callback_data="start")
     markup.row(btn_action3, btn_action4)
 
     # Отправка изображения с текстом и кнопками
@@ -28,14 +24,12 @@ def handle_tropicana_selection(call, bot):  # Добавляем парамет�
 # Обработка выбора инструкции
 def handle_rules_tropicana(call, bot):  # Добавляем новую функцию
     # Отправляем текст инструкции и картинку
-    instruction_text = (
-        "инструкция для тропикана"
-    )
-    
+    instruction_text = _('menu.instruction_text')
+
     instruction_photo_path = 'img/inst.jpg'  # Замените на путь к картинке для инструкции
 
     markup = types.InlineKeyboardMarkup()
-    btn_back = types.InlineKeyboardButton("Назад", callback_data="exit_tropicana")
+    btn_back = types.InlineKeyboardButton(_('menu.back'), callback_data="exit_tropicana")
     markup.row(btn_back)
 
     # Отправляем изображение с текстом и кнопкой назад
@@ -47,15 +41,12 @@ def handle_registration_tropicana(call, bot, url):  # Добавляем пар�
     # Обновляем статус пользователя как зарегистрированного
     register_user(call.from_user.id)
     # Отправляем текст с кнопками "Зарегистрироваться" и "Назад"
-    registration_text = (
-        "Для корректной связи с нейросетью, требуется зарегистрироваться по нашей ссылке. "
-        "Нейросеть синхронизируется с вашим аккаунтом для расчета личных сигналов."
-    )
-    
+    registration_text = _('menu.registration_text')
+
     markup = types.InlineKeyboardMarkup()
-    btn_register = types.InlineKeyboardButton("Зарегистрироваться", url=url)  # Замените на вашу ссылку
+    btn_register = types.InlineKeyboardButton(_('menu.register'), url=url)  # Замените на вашу ссылку
     markup.row(btn_register)
-    btn_back = types.InlineKeyboardButton("Назад", callback_data="back_registration_tropicana")
+    btn_back = types.InlineKeyboardButton(_('menu.back'), callback_data="back_registration_tropicana")
     markup.row(btn_back)
 
     bot.send_message(call.message.chat.id, registration_text, reply_markup=markup)
@@ -68,14 +59,14 @@ def handle_back_tropicana(call, bot):
         # Создаем WebApp-кнопку
         markup = types.InlineKeyboardMarkup()
         webapp_url = "https://ikaragodin.ru/gampling-tg/minesapp/index.html"  # Замените на ссылку на ваш WebApp
-        webapp_button = types.InlineKeyboardButton("Получить сигнал", web_app=types.WebAppInfo(webapp_url))
+        webapp_button = types.InlineKeyboardButton(_("menu.get_a_signal"), web_app=types.WebAppInfo(webapp_url))
         markup.add(webapp_button)
         
         # Отправляем пользователю кнопку для открытия WebApp
-        bot.send_message(call.message.chat.id, "Вы зарегистрированы!", reply_markup=markup)
+        bot.send_message(call.message.chat.id, _('menu.you_are_registered'), reply_markup=markup)
     else:
         # Если пользователь не зарегистрировался, отправляем напоминание о регистрации
-        bot.send_message(call.message.chat.id, "Чтобы получить сигнал, необходимо зарегистрироваться.")
+        bot.send_message(call.message.chat.id, _('menu.error_register'))
         handle_registration_tropicana(call, bot)
 
 # Обработка кнопки "Назад" на экране регистрации

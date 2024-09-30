@@ -13,7 +13,7 @@ def handle_mines_selection(call, bot):  # Добавляем параметр bo
     btn_action1 = types.InlineKeyboardButton(_("menu.registration"), callback_data="registration")
     btn_action2 = types.InlineKeyboardButton(_("menu.instruction"), callback_data="rules_mines")
     markup.row(btn_action1, btn_action2)
-    btn_action3 = types.InlineKeyboardButton(_("menu.signal"), callback_data="back_mines")
+    btn_action3 = types.InlineKeyboardButton(_("menu.issue_a_signal"), callback_data="back_mines")
     btn_action4 = types.InlineKeyboardButton(_("menu.choice_of_language"), callback_data="start")
     markup.row(btn_action3, btn_action4)
 
@@ -24,7 +24,7 @@ def handle_mines_selection(call, bot):  # Добавляем параметр bo
 # Обработка выбора инструкции
 def handle_rules_mines(call, bot):  # Добавляем новую функцию
     # Отправляем текст инструкции и картинку
-    instruction_text = _('mines.instruction_text')
+    instruction_text = _('menu.instruction_text')
     
     instruction_photo_path = 'img/inst.jpg'  # Замените на путь к картинке для инструкции
 
@@ -60,7 +60,7 @@ def handle_back_mines(call, bot):
         # Создаем WebApp-кнопку
         markup = types.InlineKeyboardMarkup()
         webapp_url = "https://ikaragodin.ru/gampling-tg/minesapp/index.html"  # Замените на ссылку на ваш WebApp
-        webapp_button = types.InlineKeyboardButton("Получить сигнал", web_app=types.WebAppInfo(webapp_url))
+        webapp_button = types.InlineKeyboardButton(_("menu.get_a_signal"), web_app=types.WebAppInfo(webapp_url))
         markup.add(webapp_button)
         
         # Отправляем пользователю кнопку для открытия WebApp
