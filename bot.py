@@ -1,30 +1,30 @@
-#token 7513438563:AAFu4m2zL0fQhSg8QWQASwPVUxBZ53BYosk
-import datetime
-
 import telebot
 from telebot import types
-from mines import handle_mines_selection, handle_registration, handle_back_registration, handle_rules_mines, handle_back_rules, handle_back_mines, handle_exit_selection
-from registration import register_user
-from tropicana import handle_tropicana_selection, handle_registration_tropicana, handle_back_registration_tropicana, handle_rules_tropicana, handle_back_rules_tropicana, handle_back_tropicana
-
-# Ссылка для регистрации
-url = "https://1wloom.top/casino/play/1play_1play_mines/?sub_1=486319246&open=register"
+from modules.registration import register_user
+from pages.tropicana import handle_tropicana_selection, handle_registration_tropicana, handle_back_registration_tropicana, handle_rules_tropicana, handle_back_rules_tropicana, handle_back_tropicana
+from pages.mines import handle_mines_selection, handle_registration, handle_back_registration, handle_rules_mines, handle_back_rules, handle_back_mines, handle_exit_selection
+from resources import url, token
+from modules.lang_handler import _, set_language
 
 # Ваш токен
-token = "7513438563:AAFu4m2zL0fQhSg8QWQASwPVUxBZ53BYosk"
 bot = telebot.TeleBot(token)
+
+# Запуск бота
+def start_bot():
+    bot.polling()
 
 # Приветственное сообщение
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     # Отправляем сообщение с выбором языка
+
     markup = types.InlineKeyboardMarkup()
     btn_russian = types.InlineKeyboardButton("Русский язык", callback_data="russian")
     markup.row(btn_russian)
-    btn_english = types.InlineKeyboardButton("Английский язык", callback_data="english")
+    btn_english = types.InlineKeyboardButton("English language", callback_data="english")
     markup.row(btn_english)
     
-    bot.send_message(message.chat.id, "На каком языке продолжать?", reply_markup=markup)
+    bot.send_message(message.chat.id, _('welcome.choose_language'), reply_markup=markup)
 
 # Удаление предыдущего сообщения перед отправкой нового
 def delete_previous_message(call, bot):
@@ -39,6 +39,7 @@ def handle_language_selection(call):
     delete_previous_message(call, bot)  # Удаляем предыдущее сообщение
 
     if call.data == "russian":
+        set_language('ru')
         # Отправляем баннер с изображением и кнопками
         photo_path = 'img/photo.jpg'  # Замените на путь к вашей картинке
         caption_text = "Выберите игру:"
@@ -55,8 +56,7 @@ def handle_language_selection(call):
         with open(photo_path, 'rb') as photo:
             bot.send_photo(call.message.chat.id, photo, caption=caption_text, reply_markup=markup)
     elif call.data == "english":
-        bot.send_message(call.message.chat.id, "You have selected English.")
-        # Здесь можно добавить дальнейшую логику для английского языка
+        set_language('en')
 
 # Обработка выбора игры mines
 @bot.callback_query_handler(func=lambda call: call.data == "mines")
@@ -68,7 +68,23 @@ def mines_selection(call):
 @bot.callback_query_handler(func=lambda call: call.data == "tropicana")
 def tropicana_selection(call):
     delete_previous_message(call, bot)  # Удаляем предыдущее сообщение
-    handle_tropicana_selection(call, bot)  # Передаем объект bot
+    bot.send_message(call.message.chat.id, _('tropicana.intro_test'))
+    #handle_tropicana_selection(call, bot)  # Передаем объект bot
+
+# Обработка выбора игры crash
+@bot.callback_query_handler(func=lambda call: call.data == "crash")
+def tropicana_selection(call):
+    delete_previous_message(call, bot)  # Удаляем предыдущее сообщение
+    bot.send_message(call.message.chat.id, _('crash.intro_test'))
+    #handle_crash_selection(call, bot)
+
+# Обработка выбора игры lucky_jet
+@bot.callback_query_handler(func=lambda call: call.data == "lucky_jet")
+def tropicana_selection(call):
+    delete_previous_message(call, bot)  # Удаляем предыдущее сообщение
+    bot.send_message(call.message.chat.id, _('lucky_jet.intro_test'))
+    #handle_lucky_jet_selection(call, bot)
+
 
 # Обработка выбора регистрации
 @bot.callback_query_handler(func=lambda call: call.data == "registration")
@@ -139,10 +155,6 @@ def handle_start_selection(call):
 # Обработка текстовых сообщений
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
-    bot.reply_to(message, "Меня еще не научили этому")
+    bot.reply_to(message, _('menu.error_message'))
+    send_welcome(message)
 
-if __name__ == '__main__':
-    # Запускаем бота
-    print("Bot is started at", (datetime.datetime.now()))
-    bot.polling()
-    print("Bot is finished without errors at", datetime.datetime.now())

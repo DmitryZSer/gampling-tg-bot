@@ -1,28 +1,20 @@
 from telebot import types
 
-from registration import is_user_registered, register_user
-url = "https://1wloom.top/casino/play/1play_1play_mines/?sub_1=486319246&open=register"
-
-# Словарь для отслеживания статуса регистрации пользователей
-#user_registered = {}
+from modules.registration import is_user_registered, register_user
+from resources import url
+from modules.lang_handler import _
 
 def handle_mines_selection(call, bot):  # Добавляем параметр bot
     # Отправляем изображение, текст и кнопки для Mines
     mines_photo_path = 'img/mines.jpg'
-    mines_caption = (
-        "Добро пожаловать в бот-сигнал игры 💣 MINES 💣\n"
-        "Mines — это гэмблинг игра в букмекерской конторе 1WIN, которая основывается на классическом 'Сапёре'.\n"
-        "Ваша цель — открывать безопасные ячейки и не попадаться в ловушки.\n\n"
-        "Наш бот основан на нейросети от OpenAI!\n"
-        "Он может предугадать расположение звёзд с вероятностью 85%."
-    )
+    mines_caption = _('mines.mines_caption')
 
     markup = types.InlineKeyboardMarkup()
-    btn_action1 = types.InlineKeyboardButton("Регистрация", callback_data="registration")
-    btn_action2 = types.InlineKeyboardButton("Инструкция", callback_data="rules_mines")
+    btn_action1 = types.InlineKeyboardButton(_("menu.registration"), callback_data="registration")
+    btn_action2 = types.InlineKeyboardButton(_("menu.instruction"), callback_data="rules_mines")
     markup.row(btn_action1, btn_action2)
-    btn_action3 = types.InlineKeyboardButton("Выдать сигнал", callback_data="back_mines")
-    btn_action4 = types.InlineKeyboardButton("Выбор языка", callback_data="start")
+    btn_action3 = types.InlineKeyboardButton(_("menu.signal"), callback_data="back_mines")
+    btn_action4 = types.InlineKeyboardButton(_("menu.choice_of_language"), callback_data="start")
     markup.row(btn_action3, btn_action4)
 
     # Отправка изображения с текстом и кнопками
@@ -32,25 +24,12 @@ def handle_mines_selection(call, bot):  # Добавляем параметр bo
 # Обработка выбора инструкции
 def handle_rules_mines(call, bot):  # Добавляем новую функцию
     # Отправляем текст инструкции и картинку
-    instruction_text = (
-        "Бот основан и обучен на кластере нейросети от OpenAI  🖥 [ChatGPT-v4.2.0]\n"
-        "Для тренировки бота было сыграно приблизительно 13 000 игр.\n"
-        "В данный момент пользователи бота успешно делают в день 20-30% от своего депозита!\n"
-        "В данный момент бот всё ещё обучается и точность бота составляет 85%!\n"
-        "Для получения максимального профита следуйте следующей инструкции:\n"
-        "👉🏻 1. Пройти регистрацию в букмекерской конторе 1WIN.\n"
-        "Если не открывается - заходим с включенным VPN (Швеция).\n"
-        "Без регистрации доступ к сигналам не будет открыт!\n"
-        "👉🏻 2. Пополнить баланс своего аккаунта.\n"
-        "👉🏻 3. Перейти в раздел 1WIN Games и выбрать игру 💣 'mines'.\n"
-        "👉🏻 4. Запросить сигнал в боте и ставить по сигналам из бота.\n"
-        "👉🏻 5. При неудачном сигнале советуем удвоить ставку, что бы полностью перекрыть потерю при следующем сигнале.\n"
-    )
+    instruction_text = _('mines.instruction_text')
     
-    instruction_photo_path = 'img/mines-inst.jpg'  # Замените на путь к картинке для инструкции
+    instruction_photo_path = 'img/inst.jpg'  # Замените на путь к картинке для инструкции
 
     markup = types.InlineKeyboardMarkup()
-    btn_back = types.InlineKeyboardButton("Назад", callback_data="exit_mines")
+    btn_back = types.InlineKeyboardButton(_('menu.back'), callback_data="exit_mines")
     markup.row(btn_back)
 
     # Отправляем изображение с текстом и кнопкой назад
@@ -63,15 +42,12 @@ def handle_registration(call, bot, url):  # Добавляем параметр 
     register_user(call.from_user.id)
 
     # Отправляем текст с кнопками "Зарегистрироваться" и "Назад"
-    registration_text = (
-        "Для корректной связи с нейросетью, требуется зарегистрироваться по нашей ссылке. "
-        "Нейросеть синхронизируется с вашим аккаунтом для расчета личных сигналов."
-    )
+    registration_text = _('menu.registration_text')
     
     markup = types.InlineKeyboardMarkup()
-    btn_register = types.InlineKeyboardButton("Зарегистрироваться", url=url)  # Замените на вашу ссылку
+    btn_register = types.InlineKeyboardButton(_('menu.register'), url=url)  # Замените на вашу ссылку
     markup.row(btn_register)
-    btn_back = types.InlineKeyboardButton("Назад", callback_data="back_registration")
+    btn_back = types.InlineKeyboardButton(_('menu.back'), callback_data="back_registration")
     markup.row(btn_back)
 
     bot.send_message(call.message.chat.id, registration_text, reply_markup=markup)
@@ -88,10 +64,10 @@ def handle_back_mines(call, bot):
         markup.add(webapp_button)
         
         # Отправляем пользователю кнопку для открытия WebApp
-        bot.send_message(call.message.chat.id, "Вы зарегистрированы!", reply_markup=markup)
+        bot.send_message(call.message.chat.id, _('menu.you_are_registered'), reply_markup=markup)
     else:
         # Если пользователь не зарегистрировался, отправляем напоминание о регистрации
-        bot.send_message(call.message.chat.id, "Чтобы получить сигнал, необходимо зарегистрироваться.")
+        bot.send_message(call.message.chat.id, _('menu.error_register'))
         handle_registration(call, bot, url)
 
 # Обработка кнопки "Назад" на экране регистрации

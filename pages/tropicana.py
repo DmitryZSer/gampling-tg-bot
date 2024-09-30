@@ -1,5 +1,5 @@
 from telebot import types
-from registration import is_user_registered, register_user
+from modules.registration import is_user_registered, register_user
 
 # Словарь для отслеживания статуса регистрации пользователей
 #user_registered = {}
@@ -32,7 +32,7 @@ def handle_rules_tropicana(call, bot):  # Добавляем новую функ
         "инструкция для тропикана"
     )
     
-    instruction_photo_path = 'img/mines-inst.jpg'  # Замените на путь к картинке для инструкции
+    instruction_photo_path = 'img/inst.jpg'  # Замените на путь к картинке для инструкции
 
     markup = types.InlineKeyboardMarkup()
     btn_back = types.InlineKeyboardButton("Назад", callback_data="exit_tropicana")

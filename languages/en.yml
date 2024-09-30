@@ -1,0 +1,11 @@
+en:
+  welcome:
+    choose_language: "Choose your language:"
+    message: "Welcome to our bot!"
+
+  menu:
+    title: "Please select an option:"
+    info: "Information"
+    settings: "Settings"
+    error_message: "I haven't been taught that yet."
+    lang_choised: "You choised english!!!!!!!!"
