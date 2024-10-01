@@ -1,1 +1,0 @@
-mines_intro = "Введение в игру Mines..."
