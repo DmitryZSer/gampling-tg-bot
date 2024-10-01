@@ -26,7 +26,7 @@ def handle_game_rules(call, bot, game_name):
     instruction_photo_path = f'img/inst.jpg'
 
     markup = types.InlineKeyboardMarkup()
-    btn_back = types.InlineKeyboardButton(_('menu.back'), callback_data=f"back_in_game_{game_name}")
+    btn_back = types.InlineKeyboardButton(_('menu.back'), callback_data=f"back-in-game_{game_name}")
     markup.row(btn_back)
 
     with open(instruction_photo_path, 'rb') as photo:
@@ -40,7 +40,7 @@ def handle_game_registration(call, bot, url, game_name):
     markup = types.InlineKeyboardMarkup()
     btn_register = types.InlineKeyboardButton(_('menu.register'), url=url)
     markup.row(btn_register)
-    btn_back = types.InlineKeyboardButton(_('menu.back'), callback_data=f"back_in_game_{game_name}")
+    btn_back = types.InlineKeyboardButton(_('menu.back'), callback_data=f"back-in-game_{game_name}")
     markup.row(btn_back)
 
     bot.send_message(call.message.chat.id, registration_text, reply_markup=markup)
