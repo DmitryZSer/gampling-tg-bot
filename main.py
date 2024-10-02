@@ -1,5 +1,5 @@
 import datetime
-import bot
+from modules import bot
 
 if __name__ == '__main__':
     # Запускаем бота

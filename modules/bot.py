@@ -34,7 +34,7 @@ def handle_language_selection(call):
     show_game_selection(call.message)
 
 def show_game_selection(message):
-    photo_path = 'img/photo.jpg'
+    photo_path = './img/photo.jpg'
     caption_text = _('welcome.game_shoice')
     markup = types.InlineKeyboardMarkup()
     for i in range(0, len(games), 2):
