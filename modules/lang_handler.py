@@ -14,9 +14,7 @@ i18n.set('fallback', 'ru')
 i18n.set('locale', "ru")  # Устанавливаем новую локаль
 
 def _(key, locale=None):
-    if locale:
-        return i18n.t(key, locale=locale)
-    return i18n.t(key)
+    return i18n.t(key, locale=locale)
 
 def set_language(new_locale):
     if new_locale in ['en', 'ru']:  # Проверка, что локаль поддерживается
