@@ -2,7 +2,7 @@ from telebot import types
 from modules.registration import is_user_registered, register_user
 from modules.lang_handler import _
 
-from resources import url, webapp_url
+from resources import url
 
 
 def handle_game_selection(call, bot, game_name):
@@ -50,7 +50,7 @@ def handle_game_signal(call, bot, game_name):
     user_id = call.from_user.id
     if is_user_registered(user_id):
         markup = types.InlineKeyboardMarkup()
-        webapp_button = types.InlineKeyboardButton(_("menu.get_a_signal"), web_app=types.WebAppInfo(webapp_url))
+        webapp_button = types.InlineKeyboardButton(_("menu.get_a_signal"), web_app=types.WebAppInfo(f'https://ikaragodin.ru/gampling-tg/{game_name}app/index.html'))
         markup.add(webapp_button)
         bot.send_message(call.message.chat.id, _('menu.you_are_registered'), reply_markup=markup)
     else:
